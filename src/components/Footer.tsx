@@ -1,9 +1,32 @@
-import React from 'react'
+import logo from "../assets/Bakanlık-logo.png";
 
-export default function Footer() {
+function Footer() {
   return (
-    <div>
-      
-    </div>
-  )
+    <footer style={styles.footer}>
+      <img src={logo} alt="Logo" style={styles.logo} />
+      <p>© 2025 Adalet Bakanlığı - Tayin Uygulaması</p>
+    </footer>
+  );
 }
+
+import type { CSSProperties } from "react";
+
+const styles: { footer: CSSProperties; logo: CSSProperties } = {
+  footer: {
+    width: "100%",
+    backgroundColor: "#800000",
+    color: "#fff",
+    textAlign: "center",
+    padding: "15px 0",
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    zIndex: 1000,         
+  },
+  logo: {
+    maxHeight: "40px",
+    marginBottom: "10px",
+  },
+};
+
+export default Footer;
