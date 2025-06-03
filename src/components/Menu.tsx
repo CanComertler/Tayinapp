@@ -127,7 +127,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     position: "sticky" as const,
-    top: 0,
+    top: 140,
     zIndex: 1000,
   },
   leftSection: {
