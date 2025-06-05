@@ -17,11 +17,7 @@ const styles: { footer: CSSProperties; logo: CSSProperties } = {
     backgroundColor: "#800000",
     color: "#fff",
     textAlign: "center",
-    padding: "15px 0",
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    zIndex: 1000,         
+    padding: "15px 0",        
   },
   logo: {
     maxHeight: "40px",
