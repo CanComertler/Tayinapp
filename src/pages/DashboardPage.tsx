@@ -80,7 +80,6 @@ function DashboardPage() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

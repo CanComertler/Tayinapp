@@ -51,6 +51,7 @@ function NewRequestsPage() {
       await addDoc(collection(db, "tayinTalepleri"), {
         ...form,
         userId,
+        durum: "Değerlendirilmedi", // Yeni durum alanı eklendi
         timestamp: Timestamp.now(),
       });
       setSuccessMessage("Başvurunuz başarıyla gönderildi.");
@@ -76,7 +77,6 @@ function NewRequestsPage() {
   };
 
   return (
-    
     <div>
       <Menu />
       <div
@@ -313,28 +313,28 @@ function NewRequestsPage() {
                 alignItems: "center",
               }}
             >
-              {form.tercihler.map((tercih, i) => (
-                <React.Fragment key={i}>
-                  <div
+              {form.tercihler.map((tercih, index) => (
+                <React.Fragment key={index}>
+                  <span
                     style={{
+                      color: "#800000",
                       fontWeight: "600",
-                      color: "#555",
                       fontSize: "16px",
+                      textAlign: "center",
                     }}
                   >
-                    {i + 1}.
-                  </div>
+                    {index + 1}
+                  </span>
                   <input
                     type="text"
                     name="tercih"
-                    placeholder="Atanmak istenen adliye/mahal adı"
+                    placeholder="Atanmak istenen yer"
                     value={tercih}
-                    onChange={(e) => handleChange(e, i)}
-                    required
+                    onChange={(e) => handleChange(e, index)}
+                    required={index === 0}
                     style={{
                       width: "100%",
                       padding: "12px 15px",
-                      marginBottom: "14px",
                       borderRadius: "8px",
                       border: "1px solid #ccc",
                       fontSize: "15px",
@@ -348,28 +348,27 @@ function NewRequestsPage() {
             </div>
           </section>
 
-          <section style={{ marginBottom: "30px" }}>
+          <section
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "14px",
+              marginBottom: "30px",
+            }}
+          >
+            <input
+              type="checkbox"
+              name="onaylandi"
+              checked={onaylandi}
+              onChange={(e) => setOnaylandi(e.target.checked)}
+              required
+              style={{ width: "22px", height: "22px", cursor: "pointer" }}
+            />
             <label
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "12px",
-                fontSize: "14px",
-                color: "#444",
-              }}
+              htmlFor="onaylandi"
+              style={{ userSelect: "none", fontWeight: "600", color: "#222" }}
             >
-              <input
-                type="checkbox"
-                checked={onaylandi}
-                onChange={() => setOnaylandi(!onaylandi)}
-                style={{ width: "18px", height: "18px", marginTop: "4px" }}
-              />
-              <span>
-                Yukarıda vermiş olduğum bilgilerin doğruluğunu, tercihlerimi şahsi
-                ve ailevi durumumu göz önünde bulundurarak yaptığımı, atamamın
-                yapılması halinde vazgeçme talebimin kabul edilmeyeceğini bildiğimi
-                beyan ederim.
-              </span>
+              Verdiğim bilgilerin doğruluğunu onaylıyorum
             </label>
           </section>
 
@@ -378,28 +377,26 @@ function NewRequestsPage() {
             disabled={loading}
             style={{
               width: "100%",
-              padding: "14px",
-              backgroundColor: loading ? "#d19999" : "#800000",
-              color: "#fff",
+              padding: "15px",
+              borderRadius: "12px",
               border: "none",
-              borderRadius: "8px",
+              backgroundColor: "#800000",
+              color: "#fff",
               fontSize: "18px",
               fontWeight: "700",
-              cursor: loading ? "default" : "pointer",
-              transition: "background-color 0.3s ease",
+              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? "Gönderiliyor..." : "Başvuruyu Gönder"}
+            {loading ? "Gönderiliyor..." : "Gönder"}
           </button>
 
           {successMessage && (
             <p
               style={{
-                marginTop: "20px",
+                marginTop: "18px",
+                fontWeight: "700",
+                color: "green",
                 textAlign: "center",
-                color: "#800000",
-                fontWeight: "600",
-                fontSize: "16px",
               }}
             >
               {successMessage}
