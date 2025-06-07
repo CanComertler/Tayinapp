@@ -8,12 +8,21 @@ type TayinTalep = {
   sicilNo?: string;
   adSoyad?: string;
   durum?: string;
+  unvan?: string;
+  gorevYeri?: string;
+  esAdSoyad?: string;
+  esTc?: string;
+  esKurum?: string;
+  esUnvan?: string;
+  esIlIlce?: string;
+  tercihler?: string[];
 };
 
 const TumTalepler = () => {
   const [talepler, setTalepler] = useState<TayinTalep[]>([]);
   const [filter, setFilter] = useState("");
-  const [hoveredId, setHoveredId] = useState<string | null>(null); // hover için id tut
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [selectedTalep, setSelectedTalep] = useState<TayinTalep | null>(null);
 
   useEffect(() => {
     const fetchTalepler = async () => {
@@ -66,6 +75,7 @@ const TumTalepler = () => {
                 }}
                 onMouseEnter={() => setHoveredId(t.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => setSelectedTalep(t)}
               >
                 <span style={styles.td}>{t.adSoyad}</span>
                 <span style={styles.td}>{t.sicilNo}</span>
@@ -75,6 +85,39 @@ const TumTalepler = () => {
           </div>
         </div>
       </div>
+
+
+      {selectedTalep && (
+  <div style={styles.popupOverlay} onClick={() => setSelectedTalep(null)}>
+    <div style={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+      <h3 style={{ marginBottom: 20, color: "#800000" }}>Tayin Talebi Detayı</h3>
+      
+      <div style={styles.detailRow}><strong>Ad Soyad:</strong><span>{selectedTalep.adSoyad}</span></div>
+      <div style={styles.detailRow}><strong>Sicil No:</strong><span>{selectedTalep.sicilNo}</span></div>
+      <div style={styles.detailRow}><strong>Unvan:</strong><span>{selectedTalep.unvan}</span></div>
+      <div style={styles.detailRow}><strong>Görev Yeri:</strong><span>{selectedTalep.gorevYeri}</span></div>
+      <div style={styles.detailRow}><strong>Durum:</strong><span>{selectedTalep.durum}</span></div>
+
+      <div style={{ ...styles.sectionHeader, marginTop: 20 }}>Eş Bilgileri</div>
+
+      <div style={styles.detailRow}><strong>Eş Ad Soyad:</strong><span>{selectedTalep.esAdSoyad}</span></div>
+      <div style={styles.detailRow}><strong>Eş TC:</strong><span>{selectedTalep.esTc}</span></div>
+      <div style={styles.detailRow}><strong>Eş Kurum:</strong><span>{selectedTalep.esKurum}</span></div>
+      <div style={styles.detailRow}><strong>Eş Unvan:</strong><span>{selectedTalep.esUnvan}</span></div>
+      <div style={styles.detailRow}><strong>Eş İl/İlçe:</strong><span>{selectedTalep.esIlIlce}</span></div>
+
+      <div style={{ ...styles.sectionHeader, marginTop: 20 }}>Tercihler</div>
+      <ul style={styles.preferenceList}>
+        {selectedTalep.tercihler?.map((tercih, index) => (
+          <li key={index} style={styles.preferenceItem}>• {tercih}</li>
+        ))}
+      </ul>
+
+      <button onClick={() => setSelectedTalep(null)} style={styles.closeButton}>Kapat</button>
+    </div>
+  </div>
+)}
+
     </>
   );
 };
@@ -138,6 +181,69 @@ const styles = {
     textAlign: "left" as const,
     color: "#333",
   },
+  popupOverlay: {
+    position: "fixed" as const,
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  popupContent: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "8px",
+    width: "500px",
+    maxHeight: "80vh",
+    overflowY: "auto" as const,
+  },
+  closeButton: {
+    marginTop: 20,
+    backgroundColor: "#800000",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: 5,
+    cursor: "pointer",
+    fontSize: "16px",
+    fontWeight: "bold" as const,
+    transition: "background-color 0.3s ease",
+    display: "block" as const,
+    width: "100%",
+    textAlign: "center" as const,
+  },
+  detailRow: {
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "10px 0",
+  borderBottom: "1px solid #800000",
+  fontSize: "16px",
+  color: "#333",
+},
+
+sectionHeader: {
+  fontSize: "18px",
+  fontWeight: "bold",
+  color: "#800000",
+  borderBottom: "2px solid #800000",
+  paddingBottom: 5,
+  marginBottom: 10,
+},
+
+preferenceList: {
+  listStyleType: "none",
+  paddingLeft: 0,
+},
+
+preferenceItem: {
+  padding: "5px 0",
+  borderBottom: "1px dashed #800000",
+  color: "#333",
+},
 };
 
 export default TumTalepler;

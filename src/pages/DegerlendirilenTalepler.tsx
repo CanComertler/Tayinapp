@@ -13,7 +13,7 @@ type TayinTalep = {
 const DegerlendirilenTalepler = () => {
   const [talepler, setTalepler] = useState<TayinTalep[]>([]);
   const [filter, setFilter] = useState("");
-  const [hoveredId, setHoveredId] = useState<string | null>(null);  // hover için state
+  const [hoveredId, setHoveredId] = useState<string | null>(null);  
 
   useEffect(() => {
     const fetchTalepler = async () => {

@@ -1,6 +1,8 @@
+import { createContext } from "react";
 
-import { createContext, useContext } from "react";
+export type AppUser = {
+  Unvan?: string;
+  [key: string]: any;
+};
 
-export const UserContext = createContext(null);
-
-export const useUser = () => useContext(UserContext);
+export const UserContext = createContext<AppUser | null>(null);

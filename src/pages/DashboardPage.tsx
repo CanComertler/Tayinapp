@@ -4,12 +4,15 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase.config";
 
 import Menu from "../components/Menu";
-import Footer from "../components/Footer";
 import background from "../assets/header-back.png";
 
+export type User = {
+  Ad: string;
+  Soyad: string;
+};
 
 function DashboardPage() {
-  const user = useContext(UserContext);
+  const user = useContext(UserContext) as User | null;
 
   const handleSignOut = async () => {
     try {

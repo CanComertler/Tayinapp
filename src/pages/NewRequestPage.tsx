@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "../../firebase.config";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import Menu from "../components/Menu";
-import React from "react";
 
 function NewRequestsPage() {
   const [form, setForm] = useState({
@@ -18,16 +17,27 @@ function NewRequestsPage() {
     tercihler: ["", "", "", "", ""],
   });
 
+  
+
   const [onaylandi, setOnaylandi] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index?: number) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index?: number
+  ) => {
     const { name, value } = e.target;
+
+    if (name === "esTc") {
+      if (!/^\d*$/.test(value)) return;
+      if (value.length > 11) return;
+    }
+
     if (name === "tercih" && index !== undefined) {
-      const updated = [...form.tercihler];
-      updated[index] = value;
-      setForm({ ...form, tercihler: updated });
+      const updatedTercihler = [...form.tercihler];
+      updatedTercihler[index] = value;
+      setForm({ ...form, tercihler: updatedTercihler });
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -51,7 +61,7 @@ function NewRequestsPage() {
       await addDoc(collection(db, "tayinTalepleri"), {
         ...form,
         userId,
-        durum: "Değerlendirilmedi", // Yeni durum alanı eklendi
+        durum: "Değerlendirilmedi",
         timestamp: Timestamp.now(),
       });
       setSuccessMessage("Başvurunuz başarıyla gönderildi.");
@@ -101,210 +111,64 @@ function NewRequestsPage() {
           Tayin Talep Formu
         </h2>
 
+        {successMessage && (
+          <div
+            style={{
+              backgroundColor: "#d4edda",
+              color: "#155724",
+              padding: "10px 15px",
+              marginBottom: "20px",
+              borderRadius: "8px",
+              fontWeight: "500",
+              textAlign: "center",
+            }}
+          >
+            {successMessage}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <section style={{ marginBottom: "25px" }}>
-            <h3
-              style={{
-                borderBottom: "2px solid #800000",
-                paddingBottom: "8px",
-                color: "#800000",
-                fontWeight: "600",
-              }}
-            >
-              TALEP SAHİBİNE AİT BİLGİLER
-            </h3>
-            <input
-              type="text"
-              name="sicilNo"
-              placeholder="Sicil No"
-              value={form.sicilNo}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="adSoyad"
-              placeholder="Adı Soyadı"
-              value={form.adSoyad}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="gorevYeri"
-              placeholder="Görev Yeri"
-              value={form.gorevYeri}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="unvan"
-              placeholder="Unvanı"
-              value={form.unvan}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
+            <h3 style={sectionTitleStyle}>TALEP SAHİBİNE AİT BİLGİLER</h3>
+            {["SicilNo", "adSoyad", "gorevYeri", "Ünvan"].map((field) => (
+              <input
+                key={field}
+                type="text"
+                name={field}
+                placeholder={field === "adSoyad" ? "Adı Soyadı" : field}
+                value={form[field as keyof typeof form] as string}
+                onChange={handleChange}
+                required
+                style={inputStyle}
+              />
+            ))}
           </section>
+
 
           <section style={{ marginBottom: "25px" }}>
-            <h3
-              style={{
-                borderBottom: "2px solid #800000",
-                paddingBottom: "8px",
-                color: "#800000",
-                fontWeight: "600",
-              }}
-            >
-              TALEP SAHİBİNİN EŞİNE AİT BİLGİLER
-            </h3>
-            <input
-              type="text"
-              name="esAdSoyad"
-              placeholder="Eşin Adı Soyadı"
-              value={form.esAdSoyad}
-              onChange={handleChange}
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="esTc"
-              placeholder="TC Kimlik No"
-              value={form.esTc}
-              onChange={handleChange}
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="esKurum"
-              placeholder="Görev Yaptığı Kurum"
-              value={form.esKurum}
-              onChange={handleChange}
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="esIlIlce"
-              placeholder="Görev Yaptığı İl / İlçe"
-              value={form.esIlIlce}
-              onChange={handleChange}
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
-            <input
-              type="text"
-              name="esUnvan"
-              placeholder="Unvanı"
-              value={form.esUnvan}
-              onChange={handleChange}
-              style={{
-                width: "100%",
-                padding: "12px 15px",
-                marginBottom: "14px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                fontSize: "15px",
-                fontWeight: "500",
-                boxSizing: "border-box",
-                outlineColor: "#800000",
-              }}
-            />
+            <h3 style={sectionTitleStyle}>TALEP SAHİBİNİN EŞİNE AİT BİLGİLER</h3>
+            {[
+              { name: "esAdSoyad", placeholder: "Adı Soyadı" },
+              { name: "esTc", placeholder: "T.C. Kimlik No" },
+              { name: "esKurum", placeholder: "Görev Yaptığı Kurum" },
+              { name: "esIlIlce", placeholder: "Görev Yaptığı İl / İlçe" },
+              { name: "esUnvan", placeholder: "Unvanı" },
+            ].map((item) => (
+              <input
+                key={item.name}
+                type="text"
+                name={item.name}
+                placeholder={item.placeholder}
+                value={form[item.name as keyof typeof form] as string}
+                onChange={handleChange}
+                style={inputStyle}
+              />
+            ))}
           </section>
 
+          {/* Tercihler */}
           <section style={{ marginBottom: "30px" }}>
-            <h3
-              style={{
-                borderBottom: "2px solid #800000",
-                paddingBottom: "8px",
-                color: "#800000",
-                fontWeight: "600",
-              }}
-            >
-              ATANMAK İSTENEN YERLER
-            </h3>
+            <h3 style={sectionTitleStyle}>ATANMAK İSTENEN ADLİYELER</h3>
             <div
               style={{
                 display: "grid",
@@ -331,81 +195,66 @@ function NewRequestsPage() {
                     placeholder="Atanmak istenen yer"
                     value={tercih}
                     onChange={(e) => handleChange(e, index)}
-                    required={index === 0}
-                    style={{
-                      width: "100%",
-                      padding: "12px 15px",
-                      borderRadius: "8px",
-                      border: "1px solid #ccc",
-                      fontSize: "15px",
-                      fontWeight: "500",
-                      boxSizing: "border-box",
-                      outlineColor: "#800000",
-                    }}
+                    style={inputStyle}
                   />
                 </React.Fragment>
               ))}
             </div>
           </section>
 
-          <section
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "14px",
-              marginBottom: "30px",
-            }}
-          >
-            <input
-              type="checkbox"
-              name="onaylandi"
-              checked={onaylandi}
-              onChange={(e) => setOnaylandi(e.target.checked)}
-              required
-              style={{ width: "22px", height: "22px", cursor: "pointer" }}
-            />
-            <label
-              htmlFor="onaylandi"
-              style={{ userSelect: "none", fontWeight: "600", color: "#222" }}
-            >
-              Verdiğim bilgilerin doğruluğunu onaylıyorum
+          {/* Onay ve Gönder */}
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <input
+                type="checkbox"
+                checked={onaylandi}
+                onChange={(e) => setOnaylandi(e.target.checked)}
+              />
+              Bilgilerimi doğru şekilde doldurdum ve onaylıyorum.
             </label>
-          </section>
+          </div>
 
           <button
             type="submit"
             disabled={loading}
             style={{
               width: "100%",
-              padding: "15px",
-              borderRadius: "12px",
-              border: "none",
+              padding: "12px",
               backgroundColor: "#800000",
               color: "#fff",
-              fontSize: "18px",
-              fontWeight: "700",
-              cursor: loading ? "not-allowed" : "pointer",
+              fontWeight: "600",
+              borderRadius: "8px",
+              border: "none",
+              fontSize: "16px",
+              cursor: "pointer",
             }}
           >
             {loading ? "Gönderiliyor..." : "Gönder"}
           </button>
-
-          {successMessage && (
-            <p
-              style={{
-                marginTop: "18px",
-                fontWeight: "700",
-                color: "green",
-                textAlign: "center",
-              }}
-            >
-              {successMessage}
-            </p>
-          )}
         </form>
       </div>
     </div>
   );
 }
+
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "12px 15px",
+  marginBottom: 14,
+  borderRadius: 8,
+  border: "1px solid #ccc",
+  fontSize: 15,
+  fontWeight: 500,
+  boxSizing: "border-box",
+  outlineColor: "#800000",
+};
+
+const sectionTitleStyle = {
+  borderBottom: "2px solid #800000",
+  paddingBottom: "8px",
+  color: "#800000",
+  fontWeight: "600",
+  marginBottom: "14px",
+};
 
 export default NewRequestsPage;
