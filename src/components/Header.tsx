@@ -49,21 +49,36 @@ const Header = () => {
         <div style={{ color: "black", fontSize: "48px" }}> Personel Genel Müdürlüğü</div>
 
         <div style={{ display: "flex", gap: "15px", fontSize: "28px", color: "grey" }}>
-          <FaFacebookF
-            style={getIconStyle("facebook")}
+          <a
+            href="https://www.facebook.com/AdaletPGM"
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHoveredIcon("facebook")}
             onMouseLeave={() => setHoveredIcon(null)}
-          />
-          <FaTwitter
-            style={getIconStyle("twitter")}
+            style={{ textDecoration: "none" }}
+          >
+            <FaFacebookF style={getIconStyle("facebook")} />
+          </a>
+          <a
+            href="https://x.com/AdaletPGM"
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHoveredIcon("twitter")}
             onMouseLeave={() => setHoveredIcon(null)}
-          />
-          <FaInstagram
-            style={getIconStyle("instagram")}
+            style={{ textDecoration: "none" }}
+          >
+            <FaTwitter style={getIconStyle("twitter")} />
+          </a>
+          <a
+            href="https://www.instagram.com/adaletpgm/"
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHoveredIcon("instagram")}
             onMouseLeave={() => setHoveredIcon(null)}
-          />
+            style={{ textDecoration: "none" }}
+          >
+            <FaInstagram style={getIconStyle("instagram")} />
+          </a>
         </div>
       </header>
 
