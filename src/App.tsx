@@ -22,13 +22,10 @@ import DegerlendirilenTalepler from "./pages/DegerlendirilenTalepler";
 import BekleyenTalepler from "./pages/BekleyenTalepler";
 import TumTalepler from "./pages/TumTalepler";
 
-type AppUser = {
-  Unvan?: string;
-  [key: string]: any;
-};
+
 
 function App() {
-  const [user, setUser] = useState<AppUser | null>(null);
+  const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
