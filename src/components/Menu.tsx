@@ -2,15 +2,9 @@ import { Link } from "react-router-dom";
 import { useUser } from "../features/UserContext";
 import { useState } from "react";
 
-type UserType = {
-  Ad: string;
-  Soyad: string;
-  SicilNo: string;
-  Unvan: string;
-};
 
 function Menu() {
-  const user = useUser() as UserType | null;
+   const { user } = useUser(); 
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
 
   const menuItemStyle = {

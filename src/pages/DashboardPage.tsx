@@ -1,24 +1,20 @@
-import { useContext } from "react";
-import { UserContext } from "../features/UserContext";
 import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase.config";
+import { useUser } from "../features/UserContext";
 
 import Menu from "../components/Menu";
-import background from "../assets/header-back.png";
-
-export type User = {
-  Ad: string;
-  Soyad: string;
-};
 
 function DashboardPage() {
-  const user = useContext(UserContext) as User | null;
+  const { user } = useUser();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      navigate("/login");
     } catch (error) {
-      console.error("Çıkış yaparken hata oluştu:", error);
+      console.error("Çıkış yaparken hata:", error);
     }
   };
 
@@ -30,59 +26,70 @@ function DashboardPage() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "20px",
-          height: "60vh",
-          backgroundColor: "rgba(167, 166, 166, 0.62)",
-          
+          padding: "5px 20px",
+          minHeight: "65vh",
+          background: "linear-gradient(to right, #f0f0f0, #dcdcdc)",
         }}
       >
         <div
           style={{
-            backgroundImage: `url(${background})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",            
-            padding: "30px",
-            borderRadius: "8px",
-            boxShadow: "0 10px 10px 10px rgba(20, 19, 19, 0.9)",
-            maxWidth: "420px",         
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            padding: "40px",
+            borderRadius: "16px",
+            boxShadow: "0 12px 30px rgba(0, 0, 0, 0.3)",
+            maxWidth: "600px",
             width: "100%",
-            boxSizing: "border-box",
             color: "black",
-            textAlign: "center",
+            backdropFilter: "blur(3px)",
           }}
         >
-          <h1 style={{ fontWeight: "bold", marginBottom: "20px" }}>
-            Hoş Geldin <br />
-            {user?.Ad} {user?.Soyad}
-          </h1>
+          {user ? (
+            <>
+              <h2 style={{ textAlign: "center", fontWeight: "bold", marginBottom: "30px", fontSize: "24px" }}>
+                Hoş Geldiniz<br />
+                <span style={{ fontSize: "26px" }}>
+                  {user.Ad} {user.Soyad}
+                </span>
+              </h2>
+              <ul style={{ listStyle: "none", padding: 0, fontSize: "16px", lineHeight: "1.8" }}>
+                <li><strong>📛 Unvan:</strong> {user.Unvan}</li>
+                <li><strong>📧 E-posta:</strong> {user.eposta}</li>
+                <li><strong>🆔 Sicil No:</strong> {user.SicilNo}</li>
+                <li><strong>📅 Hizmet Yılı:</strong> {user.HizmetYılı}</li>
+                <li><strong>🏛️ Adliye:</strong> {user.GörevYaptığıAdliye}</li>
+                <li><strong>⚖️ Mahkeme:</strong> {user.GörevYaptığıMahkeme}</li>
+              </ul>
+            </>
+          ) : (
+            <p style={{ textAlign: "center" }}>Kullanıcı verisi yükleniyor...</p>
+          )}
 
-          <button
-            onClick={handleSignOut}
-            style={{
-              padding: "10px 15px",
-              backgroundColor: "white",
-              color: "black",
-              fontWeight: "bold",
-              border: "2px solid rgb(3, 3, 3)",
-              borderRadius: "20px",
-              cursor: "pointer",
-              minWidth: "120px",
-              transition: "background-color 0.3s, color 0.3s",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.backgroundColor = "#800000";
-              e.currentTarget.style.color = "white";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.backgroundColor = "white";
-              e.currentTarget.style.color = "black";
-            }}
-          >
-            Çıkış Yap
-          </button>
+          <div style={{ textAlign: "center", marginTop: "30px" }}>
+            <button
+              onClick={handleSignOut}
+              style={{
+                padding: "12px 24px",
+                backgroundColor: "#ff4d4d",
+                color: "white",
+                fontWeight: "bold",
+                border: "none",
+                borderRadius: "25px",
+                cursor: "pointer",
+                fontSize: "16px",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#b30000";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#ff4d4d";
+              }}
+            >
+              Çıkış Yap
+            </button>
+          </div>
         </div>
       </div>
-
     </>
   );
 }
