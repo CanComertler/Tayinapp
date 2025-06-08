@@ -40,19 +40,19 @@ Tayinapp, kamu personelinin tayin (görev yeri değişikliği) taleplerini oluş
 
 Aşağıda uygulamaya ait ekran görüntüleri yer alacaktır:
 
-![Giriş Sayfası](screenshots/girissayfasi.png)
-![Admin Menü](screenshots/AdminMenü.png)
-![Başvurularım](screenshots/başvurularım.png)
-![Bekleyen Talepler](screenshots/BekleyenTalepler.png)
-![Bölge Puan Tablosu](screenshots/BölgePuanTablosu.png)
-![Dashboard Sayfası](screenshots/dashboard.png)
-![Değerlendirilen Talepler](screenshots/DeğerlendirilenTalepler.png)
-![Hizmet Bölgesi Puan Tablosu](screenshots/HizmetBölgesiPuantablosu.png)
-![Münhal Bazlı Personel Tablosu](screenshots/MünhalBazlıPersonelTablosu.png)
-![Sosyal İconların Görünümü](screenshots/sosyalicongörünümü.png)
-![Tayin Popusp](screenshots/TayinPopup.png)
-![Tüm Tayin Talepleri](screenshots/TümTayinTalepleri.png)
-![Yeni Başvuru](screenshots/yenibasvuru.png)
+![Giriş Sayfası](src/screenshots/girissayfasi.png)
+![Admin Menü](src/screenshots/AdminMenü.png)
+![Başvurularım](src/screenshots/başvurularım.png)
+![Bekleyen Talepler](src/screenshots/BekleyenTalepler.png)
+![Bölge Puan Tablosu](src/screenshots/BölgePuanTablosu.png)
+![Dashboard Sayfası](src/screenshots/dashboard.png)
+![Değerlendirilen Talepler](src/screenshots/DeğerlendirilenTalepler.png)
+![Hizmet Bölgesi Puan Tablosu](src/screenshots/HizmetBölgesiPuantablosu.png)
+![Münhal Bazlı Personel Tablosu](src/screenshots/MünhalBazlıPersonelTablosu.png)
+![Sosyal İconların Görünümü](src/screenshots/sosyalicongörünümü.png)
+![Tayin Popusp](src/screenshots/TayinPopup.png)
+![Tüm Tayin Talepleri](src/screenshots/TümTayinTalepleri.png)
+![Yeni Başvuru](src/screenshots/yenibasvuru.png)
 
 
 
