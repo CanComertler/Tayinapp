@@ -17,14 +17,30 @@ function NewRequestsPage() {
     tercihler: ["", "", "", "", ""],
   });
 
-  
+  const ADLIYELER = [
+    "Antalya Adliyesi",
+    "Kemer Adliyesi",
+    "Korkuteli Adliyesi",
+    "Tarsus Adliyesi",
+    "Mersin Adliyesi",
+    "Silifke Adliyesi",
+    "Isparta Adliyesi",
+    "Burdur Adliyesi",
+    "Bucak Adliyesi",
+    "İzmir Adliyesi",
+    "İstanbul Adliyesi",
+    "Trabzon Adliyesi",
+    "Ankara Adliyesi",
+    "Çankaya Adliyesi",
+    "Adana Adliyesi",
+  ];
 
   const [onaylandi, setOnaylandi] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     index?: number
   ) => {
     const { name, value } = e.target;
@@ -86,6 +102,19 @@ function NewRequestsPage() {
     }
   };
 
+  // Placeholder'lar burada tanımlı
+  const placeholders: Record<string, string> = {
+    sicilNo: "Sicil No Giriniz",
+    adSoyad: "Ad Soyad Giriniz",
+    gorevYeri: "Görev Yerini Giriniz",
+    unvan: "Ünvan Giriniz",
+    esAdSoyad: "Adı Soyadı",
+    esTc: "T.C. Kimlik No",
+    esKurum: "Görev Yaptığı Kurum",
+    esIlIlce: "Görev Yaptığı İl / İlçe",
+    esUnvan: "Unvanı",
+  };
+
   return (
     <div>
       <Menu />
@@ -130,12 +159,13 @@ function NewRequestsPage() {
         <form onSubmit={handleSubmit}>
           <section style={{ marginBottom: "25px" }}>
             <h3 style={sectionTitleStyle}>TALEP SAHİBİNE AİT BİLGİLER</h3>
-            {["SicilNo", "adSoyad", "gorevYeri", "Ünvan"].map((field) => (
+
+            {["sicilNo", "adSoyad", "gorevYeri", "unvan"].map((field) => (
               <input
                 key={field}
                 type="text"
                 name={field}
-                placeholder={field === "adSoyad" ? "Adı Soyadı" : field}
+                placeholder={placeholders[field] || ""}
                 value={form[field as keyof typeof form] as string}
                 onChange={handleChange}
                 required
@@ -144,29 +174,29 @@ function NewRequestsPage() {
             ))}
           </section>
 
-
           <section style={{ marginBottom: "25px" }}>
-            <h3 style={sectionTitleStyle}>TALEP SAHİBİNİN EŞİNE AİT BİLGİLER</h3>
+            <h3 style={sectionTitleStyle}>
+              TALEP SAHİBİNİN EŞİNE AİT BİLGİLER
+            </h3>
             {[
-              { name: "esAdSoyad", placeholder: "Adı Soyadı" },
-              { name: "esTc", placeholder: "T.C. Kimlik No" },
-              { name: "esKurum", placeholder: "Görev Yaptığı Kurum" },
-              { name: "esIlIlce", placeholder: "Görev Yaptığı İl / İlçe" },
-              { name: "esUnvan", placeholder: "Unvanı" },
-            ].map((item) => (
+              "esAdSoyad",
+              "esTc",
+              "esKurum",
+              "esIlIlce",
+              "esUnvan",
+            ].map((field) => (
               <input
-                key={item.name}
+                key={field}
                 type="text"
-                name={item.name}
-                placeholder={item.placeholder}
-                value={form[item.name as keyof typeof form] as string}
+                name={field}
+                placeholder={placeholders[field] || ""}
+                value={form[field as keyof typeof form] as string}
                 onChange={handleChange}
                 style={inputStyle}
               />
             ))}
           </section>
 
-          {/* Tercihler */}
           <section style={{ marginBottom: "30px" }}>
             <h3 style={sectionTitleStyle}>ATANMAK İSTENEN ADLİYELER</h3>
             <div
@@ -189,22 +219,36 @@ function NewRequestsPage() {
                   >
                     {index + 1}
                   </span>
-                  <input
-                    type="text"
+                  <select
                     name="tercih"
-                    placeholder="Atanmak istenen yer"
                     value={tercih}
                     onChange={(e) => handleChange(e, index)}
-                    style={inputStyle}
-                  />
+                    style={{
+                      ...inputStyle,
+                      paddingRight: "30px",
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                      cursor: "pointer",
+                    }}
+                    required={index === 0}
+                  >
+                    <option value="">Lütfen seçiniz</option>
+                    {ADLIYELER.map((adliye) => (
+                      <option key={adliye} value={adliye}>
+                        {adliye}
+                      </option>
+                    ))}
+                  </select>
                 </React.Fragment>
               ))}
             </div>
           </section>
 
-          {/* Onay ve Gönder */}
           <div style={{ marginBottom: "20px" }}>
-            <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <label
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
               <input
                 type="checkbox"
                 checked={onaylandi}
